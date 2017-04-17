@@ -1,0 +1,423 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/dylang/observatory"
+
+    >observatory (v1.0.0)</a>
+</h1>
+<h4>Beautiful UI for showing tasks running on the command line.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.observatory">module observatory</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.add">
+            function <span class="apidocSignatureSpan">observatory.</span>add
+            <span class="apidocSignatureSpan">(description)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings">
+            function <span class="apidocSignatureSpan">observatory.</span>settings
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">observatory.</span>STATE</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">observatory.</span>out</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.observatory.add">module observatory.add</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.add.add">
+            function <span class="apidocSignatureSpan">observatory.</span>add
+            <span class="apidocSignatureSpan">(description)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.observatory.out">module observatory.out</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.out.height">
+            function <span class="apidocSignatureSpan">observatory.out.</span>height
+            <span class="apidocSignatureSpan">(text)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.out.ln">
+            function <span class="apidocSignatureSpan">observatory.out.</span>ln
+            <span class="apidocSignatureSpan">(text)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.out.padding">
+            function <span class="apidocSignatureSpan">observatory.out.</span>padding
+            <span class="apidocSignatureSpan">(n)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.out.write">
+            function <span class="apidocSignatureSpan">observatory.out.</span>write
+            <span class="apidocSignatureSpan">(text)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.out.writeln">
+            function <span class="apidocSignatureSpan">observatory.out.</span>writeln
+            <span class="apidocSignatureSpan">(currentLine, text)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.observatory.settings">module observatory.settings</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings.settings">
+            function <span class="apidocSignatureSpan">observatory.</span>settings
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.observatory" id="apidoc.module.observatory">module observatory</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.add" id="apidoc.element.observatory.add">
+        function <span class="apidocSignatureSpan">observatory.</span>add
+        <span class="apidocSignatureSpan">(description)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function add(description) {
+    return createTask(description);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+## Usage Example
+
+```js
+var observatory = require(&#x27;observatory&#x27;);
+
+//add a task to display
+var task = observatory.<span class="apidocCodeKeywordSpan">add</span>(&#x27;Install packages...&#x27;);
+
+//while working on the task, update the status
+task.running(&#x27;Copying Files&#x27;);
+
+//optionally give details
+task.details(percent + &#x27;% &#x27; + filename);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.settings" id="apidoc.element.observatory.settings">
+        function <span class="apidocSignatureSpan">observatory.</span>settings
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">settings = function (options) {
+    settings.setSettings(options);
+    return module.exports;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+* `task.fail();`
+* `task.fail(&#x27;Disconnected&#x27;);
+
+
+## Override Settings
+
+### `observatory.<span class="apidocCodeKeywordSpan">settings</span>(settingsObject)`
+
+Tweak how tasks are rendered.
+
+`settingsObject`
+
+* `width` Integer, width in _characters_ of the `description` and `status` area. This is used to right justify the `status`. Default
+ is `55`.
+* `prefix` Sting, Text to prepend each line. Default is `&#x27; ⫸  &#x27;`.
+...</pre></li>
+    </ul>
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.observatory.add" id="apidoc.module.observatory.add">module observatory.add</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.add.add" id="apidoc.element.observatory.add.add">
+        function <span class="apidocSignatureSpan">observatory.</span>add
+        <span class="apidocSignatureSpan">(description)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function add(description) {
+    return createTask(description);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+## Usage Example
+
+```js
+var observatory = require(&#x27;observatory&#x27;);
+
+//add a task to display
+var task = observatory.<span class="apidocCodeKeywordSpan">add</span>(&#x27;Install packages...&#x27;);
+
+//while working on the task, update the status
+task.running(&#x27;Copying Files&#x27;);
+
+//optionally give details
+task.details(percent + &#x27;% &#x27; + filename);
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.observatory.out" id="apidoc.module.observatory.out">module observatory.out</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.out.height" id="apidoc.element.observatory.out.height">
+        function <span class="apidocSignatureSpan">observatory.out.</span>height
+        <span class="apidocSignatureSpan">(text)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function height(text) {
+    // todo: text might include \n
+    return Math.ceil(ln(text)/process.stdout.columns );
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.out.ln" id="apidoc.element.observatory.out.ln">
+        function <span class="apidocSignatureSpan">observatory.out.</span>ln
+        <span class="apidocSignatureSpan">(text)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function ln(text) {
+    return chalk.stripColor(text || &#x27;&#x27;).length;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.out.padding" id="apidoc.element.observatory.out.padding">
+        function <span class="apidocSignatureSpan">observatory.out.</span>padding
+        <span class="apidocSignatureSpan">(n)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function padding(n) {
+    return n &#x3e; 0 ? (new Array(n)).join(&#x27; &#x27;) : &#x27;&#x27;;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.out.write" id="apidoc.element.observatory.out.write">
+        function <span class="apidocSignatureSpan">observatory.out.</span>write
+        <span class="apidocSignatureSpan">(text)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function write(text) {
+    if (settings.write) {
+        settings.write(text);
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    currentLine += height(text);
+    write(text + OS.EOL);
+    return currentLine;
+}
+
+function write(text) {
+    if (settings.write) {
+        settings.<span class="apidocCodeKeywordSpan">write</span>(text);
+    }
+}
+
+function ln(text) {
+    return chalk.stripColor(text || &#x27;&#x27;).length;
+}
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.out.writeln" id="apidoc.element.observatory.out.writeln">
+        function <span class="apidocSignatureSpan">observatory.out.</span>writeln
+        <span class="apidocSignatureSpan">(currentLine, text)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function writeln(currentLine, text) {
+    currentLine += height(text);
+    write(text + OS.EOL);
+    return currentLine;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.observatory.settings" id="apidoc.module.observatory.settings">module observatory.settings</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.settings.settings" id="apidoc.element.observatory.settings.settings">
+        function <span class="apidocSignatureSpan">observatory.</span>settings
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">settings = function (options) {
+    settings.setSettings(options);
+    return module.exports;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+* `task.fail();`
+* `task.fail(&#x27;Disconnected&#x27;);
+
+
+## Override Settings
+
+### `observatory.<span class="apidocCodeKeywordSpan">settings</span>(settingsObject)`
+
+Tweak how tasks are rendered.
+
+`settingsObject`
+
+* `width` Integer, width in _characters_ of the `description` and `status` area. This is used to right justify the `status`. Default
+ is `55`.
+* `prefix` Sting, Text to prepend each line. Default is `&#x27; ⫸  &#x27;`.
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
