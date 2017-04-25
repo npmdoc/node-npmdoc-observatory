@@ -1,4 +1,7 @@
-# api documentation for  [observatory (v1.0.0)](https://github.com/dylang/observatory)  [![npm package](https://img.shields.io/npm/v/npmdoc-observatory.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-observatory) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-observatory.svg)](https://travis-ci.org/npmdoc/node-npmdoc-observatory)
+# npmdoc-observatory
+
+#### basic api documentation for  [observatory (v1.0.0)](https://github.com/dylang/observatory)  [![npm package](https://img.shields.io/npm/v/npmdoc-observatory.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-observatory) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-observatory.svg)](https://travis-ci.org/npmdoc/node-npmdoc-observatory)
+
 #### Beautiful UI for showing tasks running on the command line.
 
 [![NPM](https://nodei.co/npm/observatory.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/observatory)
@@ -68,7 +71,8 @@
     "scripts": {
         "test": "mocha && jshint lib test"
     },
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "bin": {}
 }
 ```
 
