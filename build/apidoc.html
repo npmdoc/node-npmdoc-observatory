@@ -93,19 +93,6 @@
 
     </ol></li>
 
-    <li class="apidocModuleLi"><a href="#apidoc.module.observatory.add">module observatory.add</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.observatory.add.add">
-            function <span class="apidocSignatureSpan">observatory.</span>add
-            <span class="apidocSignatureSpan">(description)</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
     <li class="apidocModuleLi"><a href="#apidoc.module.observatory.out">module observatory.out</a><ol>
 
         <li>
@@ -159,9 +146,45 @@
 
         <li>
 
-            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings.settings">
-            function <span class="apidocSignatureSpan">observatory.</span>settings
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings.formatStatus">
+            function <span class="apidocSignatureSpan">observatory.settings.</span>formatStatus
+            <span class="apidocSignatureSpan">(statusLabel, state)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings.prefix">
+            function <span class="apidocSignatureSpan">observatory.settings.</span>prefix
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings.setSettings">
+            function <span class="apidocSignatureSpan">observatory.settings.</span>setSettings
             <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings.width">
+            function <span class="apidocSignatureSpan">observatory.settings.</span>width
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.observatory.settings.write">
+            function <span class="apidocSignatureSpan">observatory.settings.</span>write
+            <span class="apidocSignatureSpan">(text)</span>
             </a>
 
         </li>
@@ -243,41 +266,6 @@ Tweak how tasks are rendered.
 </div>
 
 <div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.observatory.add" id="apidoc.module.observatory.add">module observatory.add</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.observatory.add.add" id="apidoc.element.observatory.add.add">
-        function <span class="apidocSignatureSpan">observatory.</span>add
-        <span class="apidocSignatureSpan">(description)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function add(description) {
-    return createTask(description);
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-
-## Usage Example
-
-```js
-var observatory = require(&#x27;observatory&#x27;);
-
-//add a task to display
-var task = observatory.<span class="apidocCodeKeywordSpan">add</span>(&#x27;Install packages...&#x27;);
-
-//while working on the task, update the status
-task.running(&#x27;Copying Files&#x27;);
-
-//optionally give details
-task.details(percent + &#x27;% &#x27; + filename);
-...</pre></li>
-    </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.observatory.out" id="apidoc.module.observatory.out">module observatory.out</a></h1>
 
 
@@ -292,7 +280,23 @@ task.details(percent + &#x27;% &#x27; + filename);
     // todo: text might include \n
     return Math.ceil(ln(text)/process.stdout.columns );
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+function update() {
+    var output = task.render();
+    var change = currentLine - task.line;
+    out.write(position.cursorUp(change));
+    out.write(output);
+    out.write(position.cursorDown(change - (out.<span class="apidocCodeKeywordSpan">height</span>(output) - 1)));
+    out.write(position.cursorBackward(out.ln(output)));
+    return task;
+}
+
+function setStatusLabel(statusLabel, defaultValue) {
+    task.statusLabel = (typeof statusLabel === &#x27;string&#x27;) ? statusLabel : defaultValue;
+}
+...</pre></li>
     </ul>
 
 
@@ -307,7 +311,23 @@ task.details(percent + &#x27;% &#x27; + filename);
     <li>description and source-code<pre class="apidocCodePre">function ln(text) {
     return chalk.stripColor(text || &#x27;&#x27;).length;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    state: constants.state.active,
+    line: currentLine,
+    longest: 0
+};
+
+function render() {
+    var statusLabel = &#x27; &#x27; + settings.formatStatus(task.statusLabel, task.state);
+    var margin = out.padding((settings.width() - out.<span class="apidocCodeKeywordSpan">ln</span>(task.description)) - out.ln(statusLabel
+));
+    var output = settings.prefix() + task.description + margin + statusLabel + &#x27; &#x27; + task.detailsLabel;
+    var length = out.ln(output);
+    var clear = out.padding(task.longest - length + 1);
+    task.longest = Math.max(length, task.longest);
+    return output + clear;
+}
+...</pre></li>
     </ul>
 
 
@@ -322,7 +342,23 @@ task.details(percent + &#x27;% &#x27; + filename);
     <li>description and source-code<pre class="apidocCodePre">function padding(n) {
     return n &#x3e; 0 ? (new Array(n)).join(&#x27; &#x27;) : &#x27;&#x27;;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    state: constants.state.active,
+    line: currentLine,
+    longest: 0
+};
+
+function render() {
+    var statusLabel = &#x27; &#x27; + settings.formatStatus(task.statusLabel, task.state);
+    var margin = out.<span class="apidocCodeKeywordSpan">padding</span>((settings.width() - out.ln(task.description)) - out.ln(statusLabel
+));
+    var output = settings.prefix() + task.description + margin + statusLabel + &#x27; &#x27; + task.detailsLabel;
+    var length = out.ln(output);
+    var clear = out.padding(task.longest - length + 1);
+    task.longest = Math.max(length, task.longest);
+    return output + clear;
+}
+...</pre></li>
     </ul>
 
 
@@ -340,20 +376,21 @@ task.details(percent + &#x27;% &#x27; + filename);
     }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-    currentLine += height(text);
-    write(text + OS.EOL);
-    return currentLine;
+    task.longest = Math.max(length, task.longest);
+    return output + clear;
 }
 
-function write(text) {
-    if (settings.write) {
-        settings.<span class="apidocCodeKeywordSpan">write</span>(text);
-    }
+function update() {
+    var output = task.render();
+    var change = currentLine - task.line;
+    out.<span class="apidocCodeKeywordSpan">write</span>(position.cursorUp(change));
+    out.write(output);
+    out.write(position.cursorDown(change - (out.height(output) - 1)));
+    out.write(position.cursorBackward(out.ln(output)));
+    return task;
 }
 
-function ln(text) {
-    return chalk.stripColor(text || &#x27;&#x27;).length;
-}
+function setStatusLabel(statusLabel, defaultValue) {
 ...</pre></li>
     </ul>
 
@@ -371,7 +408,23 @@ function ln(text) {
     write(text + OS.EOL);
     return currentLine;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    setState: setState,
+    details: details,
+    status: status,
+    done: done,
+    fail: fail
+});
+
+currentLine = out.<span class="apidocCodeKeywordSpan">writeln</span>(currentLine, task.render());
+
+return task;
+}
+
+
+function add(description) {
+return createTask(description);
+...</pre></li>
     </ul>
 
 
@@ -382,33 +435,157 @@ function ln(text) {
 
 
     <h2>
-        <a href="#apidoc.element.observatory.settings.settings" id="apidoc.element.observatory.settings.settings">
-        function <span class="apidocSignatureSpan">observatory.</span>settings
+        <a href="#apidoc.element.observatory.settings.formatStatus" id="apidoc.element.observatory.settings.formatStatus">
+        function <span class="apidocSignatureSpan">observatory.settings.</span>formatStatus
+        <span class="apidocSignatureSpan">(statusLabel, state)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function formatStatus(statusLabel, state) {
+    return settings.formatStatus(statusLabel, state);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    detailsLabel: &#x27;&#x27;,
+    state: constants.state.active,
+    line: currentLine,
+    longest: 0
+};
+
+function render() {
+    var statusLabel = &#x27; &#x27; + settings.<span class="apidocCodeKeywordSpan">formatStatus</span>(task.statusLabel, task.state
+);
+    var margin = out.padding((settings.width() - out.ln(task.description)) - out.ln(statusLabel));
+    var output = settings.prefix() + task.description + margin + statusLabel + &#x27; &#x27; + task.detailsLabel;
+    var length = out.ln(output);
+    var clear = out.padding(task.longest - length + 1);
+    task.longest = Math.max(length, task.longest);
+    return output + clear;
+}
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.settings.prefix" id="apidoc.element.observatory.settings.prefix">
+        function <span class="apidocSignatureSpan">observatory.settings.</span>prefix
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function prefix() {
+    return settings.prefix;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    line: currentLine,
+    longest: 0
+};
+
+function render() {
+    var statusLabel = &#x27; &#x27; + settings.formatStatus(task.statusLabel, task.state);
+    var margin = out.padding((settings.width() - out.ln(task.description)) - out.ln(statusLabel));
+    var output = settings.<span class="apidocCodeKeywordSpan">prefix</span>() + task.description + margin + statusLabel + &#x27; &#
+x27; + task.detailsLabel;
+    var length = out.ln(output);
+    var clear = out.padding(task.longest - length + 1);
+    task.longest = Math.max(length, task.longest);
+    return output + clear;
+}
+
+function update() {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.observatory.settings.setSettings" id="apidoc.element.observatory.settings.setSettings">
+        function <span class="apidocSignatureSpan">observatory.settings.</span>setSettings
         <span class="apidocSignatureSpan">(options)</span>
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">settings = function (options) {
-    settings.setSettings(options);
-    return module.exports;
+    <li>description and source-code<pre class="apidocCodePre">function setSettings(options) {
+
+    if (!options) {
+        return _.merge(constants.defaultSettings, {});
+    }
+
+    return _.merge(settings, options);
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-* `task.fail();`
-* `task.fail(&#x27;Disconnected&#x27;);
+module.exports = {
+    add: add,
+    STATE: constants.state
+};
+
+module.exports.settings = function(options) {
+    settings.<span class="apidocCodeKeywordSpan">setSettings</span>(options);
+    return module.exports;
+};
+...</pre></li>
+    </ul>
 
 
-## Override Settings
 
-### `observatory.<span class="apidocCodeKeywordSpan">settings</span>(settingsObject)`
+    <h2>
+        <a href="#apidoc.element.observatory.settings.width" id="apidoc.element.observatory.settings.width">
+        function <span class="apidocSignatureSpan">observatory.settings.</span>width
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function width() {
+    return settings.width;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    state: constants.state.active,
+    line: currentLine,
+    longest: 0
+};
 
-Tweak how tasks are rendered.
+function render() {
+    var statusLabel = &#x27; &#x27; + settings.formatStatus(task.statusLabel, task.state);
+    var margin = out.padding((settings.<span class="apidocCodeKeywordSpan">width</span>() - out.ln(task.description)) - out.ln(statusLabel
+));
+    var output = settings.prefix() + task.description + margin + statusLabel + &#x27; &#x27; + task.detailsLabel;
+    var length = out.ln(output);
+    var clear = out.padding(task.longest - length + 1);
+    task.longest = Math.max(length, task.longest);
+    return output + clear;
+}
+...</pre></li>
+    </ul>
 
-`settingsObject`
 
-* `width` Integer, width in _characters_ of the `description` and `status` area. This is used to right justify the `status`. Default
- is `55`.
-* `prefix` Sting, Text to prepend each line. Default is `&#x27; ⫸  &#x27;`.
+
+    <h2>
+        <a href="#apidoc.element.observatory.settings.write" id="apidoc.element.observatory.settings.write">
+        function <span class="apidocSignatureSpan">observatory.settings.</span>write
+        <span class="apidocSignatureSpan">(text)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function write(text){
+    return settings.write(text);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    task.longest = Math.max(length, task.longest);
+    return output + clear;
+}
+
+function update() {
+    var output = task.render();
+    var change = currentLine - task.line;
+    out.<span class="apidocCodeKeywordSpan">write</span>(position.cursorUp(change));
+    out.write(output);
+    out.write(position.cursorDown(change - (out.height(output) - 1)));
+    out.write(position.cursorBackward(out.ln(output)));
+    return task;
+}
+
+function setStatusLabel(statusLabel, defaultValue) {
 ...</pre></li>
     </ul>
 
